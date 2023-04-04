@@ -1,6 +1,16 @@
 @php
     echo "<?php".PHP_EOL;
 @endphp
+/*
+|--------------------------------------------------------------------------
+| Controller
+|--------------------------------------------------------------------------
+|
+| Dynamically generated controller.
+|
+| Includes basic resource CRUD functinality.
+|
+*/
 
 namespace {{ $config->namespaces->apiController }};
 
@@ -43,7 +53,6 @@ class {{ $config->modelNames->name }}APIController extends AppBaseController
     {
         $input = $request->all();
 
-        /** @var {{ $config->modelNames->name }} ${{ $config->modelNames->camel }} */
         ${{ $config->modelNames->camel }} = {{ $config->modelNames->name }}::create($input);
 
 @if($config->options->localized)
@@ -59,7 +68,6 @@ class {{ $config->modelNames->name }}APIController extends AppBaseController
     {!! $docShow !!}
     public function show($id): JsonResponse
     {
-        /** @var {{ $config->modelNames->name }} ${{ $config->modelNames->camel }} */
         ${{ $config->modelNames->camel }} = {{ $config->modelNames->name }}::find($id);
 
         if (empty(${{ $config->modelNames->camel }})) {
@@ -85,7 +93,6 @@ class {{ $config->modelNames->name }}APIController extends AppBaseController
     {!! $docUpdate !!}
     public function update($id, Update{{ $config->modelNames->name }}APIRequest $request): JsonResponse
     {
-        /** @var {{ $config->modelNames->name }} ${{ $config->modelNames->camel }} */
         ${{ $config->modelNames->camel }} = {{ $config->modelNames->name }}::find($id);
 
         if (empty(${{ $config->modelNames->camel }})) {
@@ -114,7 +121,6 @@ class {{ $config->modelNames->name }}APIController extends AppBaseController
     {!! $docDestroy !!}
     public function destroy($id): JsonResponse
     {
-        /** @var {{ $config->modelNames->name }} ${{ $config->modelNames->camel }} */
         ${{ $config->modelNames->camel }} = {{ $config->modelNames->name }}::find($id);
 
         if (empty(${{ $config->modelNames->camel }})) {
