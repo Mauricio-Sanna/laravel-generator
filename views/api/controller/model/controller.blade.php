@@ -20,10 +20,10 @@
 |
 */
 
-namespace {{ $config->namespaces->apiController }};
+namespace {{ $config->namespaces->apiController }}\Tenant\{{ $config->modelNames->name }};
 
-use {{ $config->namespaces->apiRequest }}\Create{{ $config->modelNames->name }}APIRequest;
-use {{ $config->namespaces->apiRequest }}\Update{{ $config->modelNames->name }}APIRequest;
+use {{ $config->namespaces->apiRequest }}\Tenant\{{ $config->modelNames->name }}\Create{{ $config->modelNames->name }}APIRequest;
+use {{ $config->namespaces->apiRequest }}\Tenant\{{ $config->modelNames->name }}\Update{{ $config->modelNames->name }}APIRequest;
 use {{ $config->namespaces->model }}\{{ $config->modelNames->name }};
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

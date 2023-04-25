@@ -16,24 +16,45 @@ class ModelGenerator extends BaseGenerator
         'deleted_at',
     ];
 
-    private string $fileName;
+    private string $modelFileName;
+    private string $autoModelFileName;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->path = $this->config->paths->model;
-        $this->fileName = $this->config->modelNames->name.'.php';
+        $this->basePath = $this->config->paths->model;
+
+        $this->modelPath = $this->basePath
+            // TODO: tenancy config
+            // . str_replace('\\', '', $this->config->tenant->tenant_models_namespace) . DIRECTORY_SEPARATOR
+            ;
+        $this->modelFileName = $this->config->modelNames->name.'.php';
+
+        $this->autoModelPath = $this->basePath 
+            // TODO: tenancy config
+            // . str_replace('\\', '', $this->config->tenant->tenant_models_namespace) . DIRECTORY_SEPARATOR 
+            .$this->config->autoModel->namespace_path;
+        $this->autoModelFileName = $this->config->autoModel->prefix.$this->config->modelNames->name.'.php';
     }
 
     public function generate()
     {
-        $templateData = view('laravel-generator::model.model', $this->variables())->render();
+        // Creates auto model
+        $templateData = view('laravel-generator::model.auto_model', $this->variables())->render();
 
-        g_filesystem()->createFile($this->path.$this->fileName, $templateData);
+        g_filesystem()->createFile($this->autoModelPath.$this->autoModelFileName, $templateData);
 
+        // Creates editable model (if not exists)
+        if (! file_exists($this->modelPath.$this->modelFileName)) {
+            $templateData = view('laravel-generator::model.model', $this->variables())->render();
+    
+            g_filesystem()->createFile($this->modelPath.$this->modelFileName, $templateData);
+        }
+
+        // Console notification
         $this->config->commandComment(infy_nl().'Model created: ');
-        $this->config->commandInfo($this->fileName);
+        $this->config->commandInfo($this->autoModelFileName);
     }
 
     public function variables(): array
@@ -334,8 +355,8 @@ class ModelGenerator extends BaseGenerator
 
     public function rollback()
     {
-        if ($this->rollbackFile($this->path, $this->fileName)) {
-            $this->config->commandComment('Model file deleted: '.$this->fileName);
+        if ($this->rollbackFile($this->basePath, $this->autoModelFileName)) {
+            $this->config->commandComment('Model file deleted: '.$this->autoModelFileName);
         }
     }
 }

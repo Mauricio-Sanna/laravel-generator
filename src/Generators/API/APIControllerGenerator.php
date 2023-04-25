@@ -13,7 +13,10 @@ class APIControllerGenerator extends BaseGenerator
     {
         parent::__construct();
 
-        $this->path = $this->config->paths->apiController;
+        // TODO:
+        // $this->path = $this->config->paths->apiController;
+        $this->path = $this->config->paths->apiController.$this->config->modelNames->name.DIRECTORY_SEPARATOR;
+
         $this->fileName = $this->config->modelNames->name.'APIController.php';
     }
 
@@ -45,7 +48,7 @@ class APIControllerGenerator extends BaseGenerator
 
         g_filesystem()->createFile($this->path.$this->fileName, $templateData);
 
-        $this->config->commandComment(infy_nl().'API Controller created: ');
+        $this->config->commandComment(infy_nl().'API Controller created////////////////////////////////: ');
         $this->config->commandInfo($this->fileName);
     }
 

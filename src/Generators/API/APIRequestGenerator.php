@@ -15,7 +15,8 @@ class APIRequestGenerator extends BaseGenerator
     {
         parent::__construct();
 
-        $this->path = $this->config->paths->apiRequest;
+        // TODO: tenancy config
+        $this->path = $this->config->paths->apiRequest.$this->config->modelNames->name.DIRECTORY_SEPARATOR;
         $this->createFileName = 'Create'.$this->config->modelNames->name.'APIRequest.php';
         $this->updateFileName = 'Update'.$this->config->modelNames->name.'APIRequest.php';
     }

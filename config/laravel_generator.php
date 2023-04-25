@@ -1,6 +1,118 @@
 <?php
 
 return [
+   
+    /*
+    |--------------------------------------------------------------------------
+    | Tenancy config
+    |--------------------------------------------------------------------------
+    |
+    | Additional tenancy configuration.  
+    |
+    | This configuration does not apply to the entire package, but only to the 
+    | files required by this particular system.
+    |
+    */
+
+    'tenancy' => [
+
+        /*
+        | Dynamic tenancy namespaces
+        */
+
+        // Applies to models, auto_models, controllers, auto_controllers
+        // True, will use additional '\Tenancy' namespace
+        // False, auto_models will not use any additional namespace
+        'use_tenancy_namespace' => false,
+    
+
+
+        /*
+        | Model / AutoModel
+        */
+
+        // Prefix auto_models (i.e. GeneratedPost)
+        'auto_model_prefix' => 'Generated',
+
+        // Use an additional 'Namespace' (and folder) (i.e. Generated\GeneratedPost)
+        'auto_model_namespace' => 'Generated\\',
+
+        /*
+        | Controller / AutoController
+        */
+
+        //
+        'auto_controller_prefix' => 'Generated', // e.g. GeneratedPostController.php
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto, models and controllers
+    |--------------------------------------------------------------------------
+    |
+    | Allows custom configuration by creating one of:
+    |   Model -> AutoModel 
+    |   Model -> Auto\AutoModel 
+    |
+    | This configuration does not apply to the entire package, but only to the 
+    | files required by this particular system.
+    |
+    */
+
+    'tenant' => [
+        // Use an additional namespace (and folder)
+        // Default: ''
+        // Output: Post, Auto\AutoPost
+        // Example: '\Tenant'
+        // Output: Tenant\Post, Tenant\Auto\AutoPost
+        'tenant_models_namespace' => '',
+        
+        // Use an additional namespace (and folder)
+        // Default: 'Tenant\\'
+        // Example: Tenant\PostControlleer, Tenant\AutoPostControlleer
+        'tenant_controllers_namespace' => '\Tenant',
+    ],
+
+    'auto_model' => [
+
+        // Applies to models, auto_models
+        // True, will use an additional dynamic '\ModelName' namespace (i.e. ModelName\ModelName)
+        // False, will not use any additional namespace
+        // 'use_auto_namespace' => true,
+
+        // Prefix
+        // Default: 'Auto'
+        // Example output: AutoPost
+        'prefix' => 'Auto',
+
+        // Use an additional 'Namespace' (and folder) 
+        // Default: 'Auto'
+        // Example output: Auto\AutoPost
+        'namespace' => 'Auto',
+    ],
+
+
+    'auto_controller' => [
+        // Prefix
+        // Default: 'Auto'
+        // Example output: AutoController
+        'prefix' => 'Auto',
+
+
+        // 
+        // 
+        // TODO 
+        // 
+        // Can not create auto_controller
+        // Used to crate the controller and estended controller
+        // 
+        //
+
+        // Use an additional 'Namespace' (and folder) 
+        // Default: 'Auto'
+        // Example output: Auto\AutoPostAPIController
+        'namespace' => 'Auto',        
+    ],
 
     /*
     |--------------------------------------------------------------------------

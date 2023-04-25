@@ -35,6 +35,10 @@ class GeneratorConfig
 
     public function init()
     {
+        // TODO:
+        // $this->loadTenancy();
+        // $this->loadAutoControllers();
+        $this->loadAutoModels();
         $this->loadModelNames();
         $this->loadPrefixes();
         $this->loadPaths();
@@ -65,6 +69,74 @@ class GeneratorConfig
     public function setCommand(Command &$command)
     {
         $this->command = &$command;
+    }
+
+    // TODO:
+    // Load dynamic tenancy folder.
+    // At the moment, this function is not used.
+    public function loadTenancy()
+    {
+        $tenant = (object)[];
+
+        foreach (config('laravel_generator.tenant') as $key => $value) {
+            if($key === 'tenant_models_namespace') {
+                $tenant->tenant_models_namespace = '\\' . $value;
+                
+                $tenant->tenant_models_namespace_path = DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR;
+            }          
+
+            if($key === 'tenant_controllers_namespace') {
+                $tenant->tenant_controllers_namespace = '\\' . $value;
+
+                $tenant->tenant_controllers_namespace_path = DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR;
+            }          
+        }        
+
+        $this->tenant = $tenant;
+    }
+
+    // TODO:
+    public function loadAutoControllers()
+    {
+        $autoController = (object)[];
+
+        foreach (config('laravel_generator.auto_controller') as $key => $value) {
+            if ($key === 'namespace') {
+                $autoController->namespace = $value;
+                $autoController->_namespace = $value ? "\\$value" : '';
+                $autoController->namespace_ = $value ? "$value\\" : '';
+
+                $autoController->namespace_path = DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR;
+            }
+
+            if ($key !== 'namespace') {
+                $autoController->$key = $value;
+            }
+
+        }
+
+        $this->autoController = $autoController;
+    }
+
+    public function loadAutoModels()
+    {
+        $autoModel = (object)[];
+
+        foreach (config('laravel_generator.auto_model') as $key => $value) {
+            if ($key === 'namespace') {
+                $autoModel->namespace = $value;
+                $autoModel->_namespace = $value ? "\\$value" : '';
+                $autoModel->namespace_ = $value ? "$value\\" : '';
+
+                $autoModel->namespace_path = DIRECTORY_SEPARATOR . $value . DIRECTORY_SEPARATOR;
+            }
+
+            if ($key !== 'namespace') {
+                $autoModel->$key = $value;
+            }
+        }
+
+        $this->autoModel = $autoModel;
     }
 
     public function loadModelNames()
