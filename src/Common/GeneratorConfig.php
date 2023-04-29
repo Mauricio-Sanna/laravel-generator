@@ -37,7 +37,7 @@ class GeneratorConfig
     {
         // TODO:
         // $this->loadTenancy();
-        // $this->loadAutoControllers();
+        $this->loadAutoControllers();
         $this->loadAutoModels();
         $this->loadModelNames();
         $this->loadPrefixes();

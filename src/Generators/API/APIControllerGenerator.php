@@ -8,16 +8,18 @@ use InfyOm\Generator\Generators\BaseGenerator;
 class APIControllerGenerator extends BaseGenerator
 {
     private string $fileName;
-
+    
     public function __construct()
     {
         parent::__construct();
+        
+        $this->basePath = $this->config->paths->apiController.$this->config->modelNames->name.DIRECTORY_SEPARATOR;
 
-        // TODO:
-        // $this->path = $this->config->paths->apiController;
-        $this->path = $this->config->paths->apiController.$this->config->modelNames->name.DIRECTORY_SEPARATOR;
+        $this->controllerPath = $this->basePath;
+        $this->controllerFileName = $this->config->modelNames->name.'APIController.php';
 
-        $this->fileName = $this->config->modelNames->name.'APIController.php';
+        $this->autoControllerPath = $this->basePath; 
+        $this->autoControllerFileName = $this->config->autoController->prefix.$this->config->modelNames->name.'APIController.php';
     }
 
     public function variables(): array
@@ -30,7 +32,7 @@ class APIControllerGenerator extends BaseGenerator
         if ($this->config->options->repositoryPattern) {
             $templateName = 'repository.controller';
         } else {
-            $templateName = 'model.controller';
+            $templateName = 'model.auto_controller';
         }
 
         if ($this->config->options->resources) {
@@ -42,15 +44,22 @@ class APIControllerGenerator extends BaseGenerator
 
     public function generate()
     {
-        $viewName = $this->getViewName();
+        // $viewName = $this->getViewName();
 
-        $templateData = view('laravel-generator::api.controller.'.$viewName, $this->variables())->render();
+        $templateData = view('laravel-generator::api.controller.'.'model.auto_controller', $this->variables())->render();
 
-        g_filesystem()->createFile($this->path.$this->fileName, $templateData);
+        g_filesystem()->createFile($this->autoControllerPath.$this->autoControllerFileName, $templateData);
+
+        // Creates editable controller (if not exists)
+        if (! file_exists($this->controllerPath.$this->controllerFileName)) {
+            $templateData = view('laravel-generator::api.controller.'.'model.controller', $this->variables())->render();
+    
+            g_filesystem()->createFile($this->controllerPath.$this->controllerFileName, $templateData);
+        }
 
         $this->config->commandComment(infy_nl().'API Controller created////////////////////////////////: ');
-        $this->config->commandInfo($this->fileName);
-    }
+        $this->config->commandInfo($this->autoControllerFileName);
+    }           
 
     protected function docsVariables(): array
     {
